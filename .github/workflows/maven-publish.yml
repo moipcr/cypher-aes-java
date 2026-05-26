@@ -33,3 +33,9 @@ jobs:
         with:
           files: target/*.jar # Sube todos los archivos .jar generados
           generate_release_notes: true
+          
+      - name: Guardar JAR como artefacto del sistema
+        uses: actions/upload-artifact@v4
+        with:
+          name: ejecutable-java
+          path: target/*.jar
