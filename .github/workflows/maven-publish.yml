@@ -3,7 +3,8 @@ name: Construir y Publicar Ejecutable Java
 on:
   push:
     tags:
-      - 'v*.*.*' # Se ejecuta automáticamente al crear un tag (ej: v1.0.0)
+      - 'v*.*.*'
+  workflow_dispatch: # Permite la ejecución manual desde la pestaña Actions
 
 jobs:
   build-and-release:
