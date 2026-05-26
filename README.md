@@ -11,6 +11,26 @@
 ¿Por qué existe este proyecto? Porque **la privacidad no debería ser complicada**. Si necesitas enviar un mensaje seguro, proteger un documento o simplemente experimentar con criptografía moderna, AES Cipher te lo pone fácil: sin servidores, sin cuentas, sin conexión a internet. **Todo ocurre en tu máquina.**
 
 ---
+### 📥 Descargar Ejecutable
+
+Haz clic en el siguiente enlace para obtener la versión estable más reciente:
+
+👉 **[Descargar Última Versión (.JAR)](https://github.com)**
+
+---
+
+### 🛠️ Requisitos y Cómo Ejecutar
+
+Para ejecutar esta aplicación en tu computadora, necesitas tener instalado **Java (JRE/JDK) versión 21** o superior.
+
+**Instrucciones de uso:**
+1. Descarga el archivo `.jar` desde el enlace de arriba.
+2. Abre tu terminal o consola de comandos.
+3. Navega hasta la carpeta de descarga y ejecuta:
+   ```bash
+   java -jar tu-archivo-app.jar
+   ```
+*(Nota: En muchos sistemas operativos como Windows o macOS, también puedes ejecutarlo haciendo **doble clic** sobre el archivo `.jar` si ya tienes Java bien configurado).*
 
 ## ✨ Funcionalidades
 
