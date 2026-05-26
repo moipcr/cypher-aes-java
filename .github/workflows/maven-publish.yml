@@ -1,17 +1,17 @@
-name: Construir y Publicar Ejecutable Java
+name: Construir Instalador Swing
 
 on:
   push:
     tags:
       - 'v*.*.*'
-  workflow_dispatch: # Permite la ejecución manual desde la pestaña Actions
+  workflow_dispatch:
 
 jobs:
-  build-and-release:
-    name: Construir y Liberar
-    runs-on: ubuntu-latest
+  build-windows-installer:
+    name: Crear Instalador Windows (.exe)
+    runs-on: windows-latest # Cambiamos a Windows para poder generar el instalador .exe
     permissions:
-      contents: write # Permiso necesario para crear un Release
+      contents: write
 
     steps:
       - name: Clonar repositorio
@@ -21,21 +21,41 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '25' # Cambia a tu versión de Java (ej. 11, 17, etc.)
+          java-version: '21'
           cache: 'maven'
 
-      - name: Construir proyecto con Maven
+      - name: Construir JAR con Maven
         run: mvn clean package -DskipTests
+
+      - name: Extraer información del JAR
+        shell: bash
+        run: |
+          # Busca el archivo JAR generado en la carpeta target
+          JAR_FILE=$(basename target/*.jar)
+          echo "JAR_NAME=$JAR_FILE" >> $GITHUB_ENV
+          echo "Detectado JAR: $JAR_FILE"
+
+      - name: Generar Instalador Nativo con jpackage
+        shell: bash
+        run: |
+          # jpackage empaqueta el JAR junto con un entorno Java (JRE) mínimo para Swing
+          jpackage \
+            --type exe \
+            --input target/ \
+            --main-jar "${{ env.JAR_NAME }}" \
+            --name "MiAplicacionSwing" \
+            --app-version "1.0.0" \
+            --vendor "MiNombreOEmpresa" \
+            --dest dist/ \
+            --win-shortcut \
+            --win-menu
 
       - name: Crear Release en GitHub
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
         with:
-          files: target/*.jar # Sube todos los archivos .jar generados
+          files: |
+            target/*.jar
+            dist/*.exe
           generate_release_notes: true
-          
-      - name: Guardar JAR como artefacto del sistema
-        uses: actions/upload-artifact@v4
-        with:
-          name: ejecutable-java
-          path: target/*.jar
+
